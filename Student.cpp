@@ -11,6 +11,7 @@ Student::Student(string studentID, string firstName, string lastName, string ema
    SetDegreeProgram(degreeProgram);
 }
 
+// Accessors and mutators for all data members
 void Student::SetStudentID(string studentID){
    this->studentID = studentID;
 }
