@@ -53,7 +53,7 @@ int main(){
    testRoster.PrintByDegreeProgram(Degree::DegreeProgram::NETWORK);
    cout << endl;
 
-   cout << "Testing Remove(). Expected: No existing student with ID005." << endl;
+   cout << "Testing Remove(). Expected: Student with ID ID005 has been removed from the roster." << endl;
    cout << "Output: ";
    testRoster.Remove("ID005");
    cout << endl;
