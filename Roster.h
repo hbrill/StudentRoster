@@ -1,21 +1,24 @@
 #ifndef ROSTER_H
 #define ROSTER_H
-#include <vector>
+
 #include "Student.h"
+#include <vector>
 
 class Roster{
    public:
-       void Add(string studentID, string firstName, string lastName, string emailAddress, int age, int daysInCourse1, int daysInCourse2, int daysInCourse3, Degree::DegreeProgram degreeProgram);
-       void Remove(string studentID);
-       void PrintAll();
-       void PrintAverageDaysInCourse(string studentID);
-       void PrintInvalidEmails();
-       void PrintByDegreeProgram(Degree::DegreeProgram degreeProgram);
-       vector<string> Parse(string data);
-       Roster(const string data[5]);
-       
+      Roster(const string studentData[], int numStudents);
+      vector<string> Parse(const string &studentData);
+      void Add(string studentID, string firstName, string lastName, string emailAddress, int age, int daysInCourse1, int daysInCourse2, int daysInCourse3, Degree::DegreeProgram degreeProgram);
+      void Remove(string studentID);
+      void PrintAll();
+      void Shift(int removeIndex);
+      void PrintAverageDaysInCourse(string studentID);
+      void PrintInvalidEmails();
+
    private:
-      vector<Student*> classRosterArray;
+      Student *classRosterArray[5];
+      int index = -1;
+      int nullIndex = -1;
 };
 
 #endif

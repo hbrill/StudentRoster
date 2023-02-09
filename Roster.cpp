@@ -1,119 +1,119 @@
 #include "Roster.h"
 #include <iostream>
+#include <vector>
+#include <iomanip>
 using namespace std;
 
 
-void Roster::Add(string studentID, string firstName, string lastName, string emailAddress, int age, int daysInCourse1, int daysInCourse2, int daysInCourse3, Degree::DegreeProgram degreeProgram){
-   int daysLeft[] = {daysInCourse1, daysInCourse2, daysInCourse3};
-   Student newStudent(studentID, firstName, lastName, emailAddress, age, degreeProgram, daysLeft);
-   Student* studentPtr = &newStudent;
-   classRosterArray.push_back(studentPtr);
+Roster::Roster(const string studentData[], int numStudents){
+    vector<string> parsedData;
+    for(int i = 0; i < numStudents; i++){
+        parsedData = Parse(studentData[i]);
+        Add(parsedData.at(0), parsedData.at(1), parsedData.at(2), parsedData.at(3), stoi(parsedData.at(4)), stoi(parsedData.at(5)), stoi(parsedData.at(6)), stoi(parsedData.at(7)), Degree::DegreeProgram(stoi(parsedData.at(8))));
+    }
+}
 
+vector<string> Roster::Parse(const string &studentData){
+    char delim = ','; // comma separates data
+    int start = 0; // beginning of string
+    int end; // will be the first occurrence of the delimiter
+    vector<string> studentVector;
+
+    while(studentData.find(delim, start) != string::npos){
+        end = studentData.find(delim, start); 
+        studentVector.push_back(studentData.substr(start, (end-start)));
+        start = end + 1;
+    }
+
+    end = studentData.size();
+
+    if(studentData.substr(start, (end-start)) == "SECURITY"){
+        studentVector.push_back("0");
+    }else if(studentData.substr(start, (end-start)) == "NETWORK"){
+        studentVector.push_back("1");
+    }else if(studentData.substr(start, (end-start)) == "SOFTWARE"){
+        studentVector.push_back("2");
+    }
+
+    return studentVector;
+}
+
+void Roster::Add(string studentID, string firstName, string lastName, string emailAddress, int age, int daysInCourse1, int daysInCourse2, int daysInCourse3, Degree::DegreeProgram degreeProgram){
+   index++;
+   classRosterArray[index] = new Student(studentID, firstName, lastName, emailAddress, age, daysInCourse1, daysInCourse2, daysInCourse3, degreeProgram);
 }
 
 void Roster::Remove(string studentID){
-   unsigned int i;
-   Student *currStudent;
-   bool studentFound = false;
-   for(i = 0; i < classRosterArray.size(); i++){
-      currStudent = classRosterArray.at(i);
-      if(currStudent->GetStudentID() == studentID){
-        delete currStudent;
-        studentFound = true;
+   bool found = false;
+   for(int i = 0; i < index; i++){
+      if(classRosterArray[i]->GetStudentID() == studentID){
+        found = true;
+        delete classRosterArray[i];
+        classRosterArray[i] = nullptr;
+        nullIndex = i;
         break;
       }
    }
 
-   if(!studentFound){
-      cout << "Invalid student ID" << endl;
+   if(found){
+    cout << "Student with ID " << studentID << " has been removed from the roster" << endl; 
+    Shift(nullIndex);
+    index--;
+   }else{
+    cout << "No existing student with student ID " << studentID << endl;
    }
 }
 
 void Roster::PrintAll(){
-   int i;
-   Student *currStudent;
-   for(i = 0; i < classRosterArray.size(); i++){
-      currStudent = classRosterArray.at(i);
-      currStudent->Print();
+    for(int i = 0; i <= index; i++){
+        classRosterArray[i]->Print();
+    }
+}
+
+void Roster::Shift(int removeIndex){
+   int toRemove = removeIndex;
+   while(toRemove < index){
+       classRosterArray[toRemove] = classRosterArray[toRemove + 1];
+       classRosterArray[toRemove + 1] = nullptr;
+       toRemove++;
    }
 }
 
 void Roster::PrintAverageDaysInCourse(string studentID){
-   unsigned int i;
-   int studentIndex;
-   Student *currStudent;
-   for(i = 0; i < classRosterArray.size(); i++){
-      currStudent = classRosterArray.at(i);
-      if(currStudent->GetStudentID() == studentID){
-        studentIndex = i;
-        break;
-      }
-   }
-   
-   if(studentIndex > -1){
-      int avg = 0;
-      int sum = 0;
-      for(i = 0; i < 3; i++){
-         sum += (classRosterArray.at(studentIndex))->Student::GetDaysLeft()[i];
-      }
-      avg = sum / 3;
-      cout << "The average number of days for student with ID " << (classRosterArray.at(studentIndex))->GetStudentID() << " is " << avg << endl;
-   }else{
-      cout << "Invalid student ID" << endl;
-   }
-   
-}
+    bool found = false;
+    unsigned int i;
+    for(i = 0; i <= index; i++){
+        if(classRosterArray[i]->GetStudentID() == studentID){
+            found = true;
+            break;
+        }
+    }
 
-
-vector<string> Roster::Parse(string data){
-   int begin = 0;
-   int end;
-   char delim = ',';
-   vector<string> parsedData;
-   for(int i = 0; i < data.size(); i++){
-      end = data.find(delim);
-      parsedData.push_back(data.substr(begin, end));
-      data.replace(begin, end+1, "");
-   }
-
-   if(data == "SECURITY"){
-      parsedData.at(8) = "0";
-   }else if(data == "NETWORK"){
-      parsedData.at(8) = "1";
-   }else if(data == "SOFTWARE"){
-      parsedData.at(8) = "2";
-   }
-
-   return parsedData;
-}
-
-
-Roster::Roster(const string studentData[5]){
-   vector<string> parsedData;
-   
-   for(int i = 0; i < 5; i++){
-      parsedData = this->Roster::Parse(studentData[i]);
-      this->Add(parsedData.at(0), parsedData.at(1), parsedData.at(2), parsedData.at(3), stoi(parsedData.at(4)), stoi(parsedData.at(5)), stoi(parsedData.at(6)), stoi(parsedData.at(7)), (Degree::DegreeProgram) stoi(parsedData.at(8)));
+    if(found){
+        cout << fixed << setprecision(2);
+        double classOne = classRosterArray[i]->GetRemainingDays()[0];
+        double classTwo = classRosterArray[i]->GetRemainingDays()[1];
+        double classThree = classRosterArray[i]->GetRemainingDays()[2];
+        double average = (classOne + classTwo + classThree) / 3;
+         
+        cout << "Average number of days to complete classes for student with ID " << classRosterArray[i]->GetStudentID() << ": " << average << endl;
+    }else{
+        cout << "No existing student with student ID " << studentID << endl;
     }
 }
 
 void Roster::PrintInvalidEmails(){
-   //bool allValid = false;
-   Student *currStudent;
-   for(int i = 0; i < 5; i++){
-      currStudent = (classRosterArray[i]);
-      if(!(currStudent->Student::GetEmail().find('@') != string::npos && currStudent->Student::GetEmail().find('.') != string::npos && currStudent->Student::GetEmail().find('@') == string::npos)){
-         cout << "Student with ID " << currStudent->Student::GetStudentID() << " has an invalid email address" << endl;
-      }
-   }
-}
+    int invalidCount = 0;
+    for(int i = 0; i <= index; i++){
+        if(!(classRosterArray[i]->GetEmailAddress().find('@')) || 
+        !(classRosterArray[i]->GetEmailAddress().find('.')) || 
+        (classRosterArray[i]->GetEmailAddress().find(' ') != string::npos)){
+            cout << "Student with ID " << classRosterArray[i]->GetStudentID() << "'s email does not meet the email standards." << endl;
+            invalidCount++;
+        }
+    }
 
-void Roster::PrintByDegreeProgram(Degree::DegreeProgram degreeProgram){
-   Student *currStudent;
-   for(int i = 0; i < 5; i++){
-      currStudent = (classRosterArray[i]);
-      if(currStudent->Student::GetDegreeProgram() == degreeProgram){
-         cout << "Student with ID " << currStudent->Student::GetStudentID() << " is enrolled in this degree program." << endl;
-      }
-   }
+    if(invalidCount == 0){
+        cout << "All student emails meet the email standards!" << endl;
+    }
 }

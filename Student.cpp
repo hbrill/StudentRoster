@@ -1,22 +1,21 @@
 #include "Student.h"
 #include <iostream>
 
-Student::Student(string studentID, string firstName, string lastName, string emailAddress, int studentAge, Degree::DegreeProgram degreeProgram, int daysLeft[3]){
+Student::Student(string studentID, string firstName, string lastName, string emailAddress, int age, int classOne, int classTwo, int classThree, Degree::DegreeProgram degreeProgram){
    SetStudentID(studentID);
    SetFirstName(firstName);
    SetLastName(lastName);
-   SetEmail(emailAddress);
-   SetStudentAge(studentAge);
+   SetEmailAddress(emailAddress);
+   SetStudentAge(age);
+   SetRemainingDays(classOne, classTwo, classThree);
    SetDegreeProgram(degreeProgram);
-   SetDaysLeft(daysLeft);
 }
-
 
 void Student::SetStudentID(string studentID){
    this->studentID = studentID;
 }
 
-string Student::GetStudentID() const{
+string Student::GetStudentID(){
    return studentID;
 }
 
@@ -24,72 +23,65 @@ void Student::SetFirstName(string firstName){
    this->firstName = firstName;
 }
 
-string Student::GetFirstName() const{
+string Student::GetFirstName(){
    return firstName;
 }
-
 
 void Student::SetLastName(string lastName){
    this->lastName = lastName;
 }
 
-string Student::GetLastName() const{
+string Student::GetLastName(){
    return lastName;
 }
 
-void Student::SetEmail(string emailAddress){
+void Student::SetEmailAddress(string emailAddress){
    this->emailAddress = emailAddress;
 }
 
-string Student::GetEmail() const{
+string Student::GetEmailAddress(){
    return emailAddress;
 }
 
-void Student::SetStudentAge(int studentAge){
-   this->studentAge = studentAge;
+void Student::SetStudentAge(int age){
+   this->age = age;
 }
 
-int Student::GetStudentAge() const{
-   return studentAge;
+int Student::GetStudentAge(){
+   return age;
+}
+
+void Student::SetRemainingDays(int classOne, int classTwo, int classThree){
+   remainingDays[0] = classOne;
+   remainingDays[1] = classTwo;
+   remainingDays[2] = classThree;
+}
+
+int* Student::GetRemainingDays(){
+   return remainingDays;
 }
 
 void Student::SetDegreeProgram(Degree::DegreeProgram degreeProgram){
    this->degreeProgram = degreeProgram;
 }
 
-Degree::DegreeProgram Student::GetDegreeProgram(){
-   return degreeProgram;
-}
-
-void Student::SetDaysLeft(int daysLeft[3]){
-   for(int i = 0; i < 3; i++){
-      this->daysLeft[i] = daysLeft[i];
+string Student::GetDegreeProgram(){
+   string program;
+   if(degreeProgram == 0){
+      program = "Security";
+   }else if(degreeProgram == 1){
+      program = "Network";
+   }else if(degreeProgram == 2){
+      program = "Software";
    }
-}
 
-int * Student::GetDaysLeft(){
-   return daysLeft;
-}
-
-string Student::GetDaysLeftString(){
-   string days = "{" ;
-   days.append(to_string(this->daysLeft[0]));
-   days.append(", ");
-   days.append(to_string(this->daysLeft[1]));
-   days.append(", ");
-   days.append(to_string(this->daysLeft[2]));
-   days.append("}");
-   return days;
+   return program;
 }
 
 void Student::Print(){
-   cout << this->GetStudentID() << "\t";
-   cout << "First Name: " << this->GetFirstName() << "\t";
-   cout << "Last Name: " << this->GetLastName() << "\t";
-   cout << "Age: " << this->GetStudentAge() << "\t";
-   cout << "daysInCourse:" << this->GetDaysLeftString() << "\t";
-   cout << "Degree Program: " << this->GetDegreeProgram() << endl;
+   cout << GetStudentID();
+   cout << "\t First Name: " << GetFirstName() << "\t Last Name: " << GetLastName();
+   cout << "\t Age: " << GetStudentAge() << "\t daysInCourse: {" << GetRemainingDays()[0] << 
+   ", " << GetRemainingDays()[1] << ", " << GetRemainingDays()[2] << "}";
+   cout << "\t Degree Program: " << GetDegreeProgram() << endl;
 }
-
-
-

@@ -2,8 +2,8 @@
 #define DEGREE_H
 
 class Degree{
-    public:
-       enum DegreeProgram{ SECURITY, NETWORK, SOFTWARE };
+   public:
+      enum DegreeProgram { SECURITY, NETWORK, SOFTWARE };
 };
 
 #endif

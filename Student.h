@@ -5,35 +5,35 @@
 #include <string>
 using namespace std;
 
-
 class Student{
-    public:
-      Student(string studentID, string firstName, string lastName, string emailAddress, int studentAge, Degree::DegreeProgram degreeProgram, int daysLeft[3]);
+   public:
+      Student();
+      Student(string studentID, string firstName, string lastName, string emailAddress, int age, int classOne, int classTwo, int classThree, Degree::DegreeProgram degreeProgram);
       void SetStudentID(string studentID);
-      string GetStudentID() const;
+      string GetStudentID();
       void SetFirstName(string firstName);
-      string GetFirstName() const;
+      string GetFirstName();
       void SetLastName(string lastName);
-      string GetLastName() const;
-      void SetEmail(string emailAddress);
-      string GetEmail() const;
-      void SetStudentAge(int studentAge);
-      int GetStudentAge() const;
+      string GetLastName();
+      void SetEmailAddress(string emailAddress);
+      string GetEmailAddress();
+      void SetStudentAge(int age);
+      int GetStudentAge();
+      void SetRemainingDays(int classOne, int classTwo, int classThree);
+      int* GetRemainingDays();
       void SetDegreeProgram(Degree::DegreeProgram degreeProgram);
-      Degree::DegreeProgram GetDegreeProgram();
-      void SetDaysLeft(int daysLeft[3]);
-      string GetDaysLeftString();
-      int* GetDaysLeft();
+      string GetDegreeProgram();
       void Print();
-      
-    private:
+
+
+   private:
       string studentID;
       string firstName;
       string lastName;
       string emailAddress;
-      int studentAge;
+      int age;
+      int remainingDays[3];
       Degree::DegreeProgram degreeProgram;
-      int daysLeft[3];
 };
 
 #endif
