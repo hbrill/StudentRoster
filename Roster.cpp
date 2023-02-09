@@ -19,6 +19,9 @@ Roster::Roster(const string studentData[]){
 // Releases memory allocated when creating a Roster of this class
 Roster::~Roster(){
    cout << "Releasing allocated memory" << endl;
+   for(int i = 0; i <= index; i++){
+      delete classRosterArray[i];
+   }
 }
 
 vector<string> Roster::Parse(const string &studentData){
