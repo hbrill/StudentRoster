@@ -25,6 +25,9 @@ int main(){
    classRoster.Remove("A3");
    cout << endl;
    
+   classRoster.Remove("A3");
+   cout << endl;
+
    classRoster.PrintAll();
    cout << endl;
 
