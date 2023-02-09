@@ -80,10 +80,10 @@ void Roster::PrintAll(){
    }
 }
 
+// Shift elements towards the left until the null element is at the last index
 void Roster::Shift(int removeIndex){
    int toRemove = removeIndex; // avoids modifying argument
    while(toRemove < index){
-      // Shift elements towards the left until the null element is at the last index
       classRosterArray[toRemove] = classRosterArray[toRemove + 1];
       classRosterArray[toRemove + 1] = nullptr;
       toRemove++;
@@ -113,6 +113,7 @@ void Roster::PrintAverageDaysInCourse(string studentID){
    }
 }
 
+// The standard for email is: must contain a ., an @, and NO spaces
 void Roster::PrintInvalidEmails(){
    int invalidCount = 0;
    for(int i = 0; i <= index; i++){

@@ -13,16 +13,20 @@ int main(){
    cout << "Course Title: C867 Scripting and Programming Applications" << "\t Programming Language: C++" << endl;
    cout << "Author: Heather Brillant" << "\t Student ID: 010852579" << endl;
    cout << endl;
-   
+
    Roster classRoster(studentData);
+   
    classRoster.PrintInvalidEmails();
    cout << endl;
-   classRoster.PrintByDegreeProgram(Degree::DegreeProgram::SOFTWARE);
    
+   classRoster.PrintByDegreeProgram(Degree::DegreeProgram::SOFTWARE);
    cout << endl;
+
    classRoster.Remove("A3");
    cout << endl;
+   
    classRoster.PrintAll();
+   cout << endl;
 
    return 0;
 }
